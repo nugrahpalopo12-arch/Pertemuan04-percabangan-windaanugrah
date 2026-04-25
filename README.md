@@ -4,7 +4,6 @@
 
 > **Nama:** Winda Anugrah  
 > **NIM:** IK2411016  
-> **Kelas:** IK2411  
 > **Dosen:** Abdul Malik, S.Kom., M.Cs.  
 > **Mata Kuliah:** Pemrograman Basis Data — 2025/2026
 
