@@ -1,132 +1,68 @@
-Tugas Pertemuan 4 — Struktur Kontrol Percabangan
+# 📚 Pemrograman Basis Data — Pertemuan 4
 
-| | |
-|---|---|
-| **Nama** | Winda Anugrah |
-| **NIM** | IK2411016 |
-| **Kelas** | IK2411 |
-| **Mata Kuliah** | Pemrograman Basis Data |
-| **Dosen** | Abdul Malik, S.Kom., M.Cs. |
-| **Judul Tugas** | Kuis/Tugas Pertemuan 4 - Struktur Kontrol Percabangan |
+## Struktur Kontrol Percabangan IF-THEN-ELSE pada MySQL
 
----
-
-## Deskripsi Tugas
-
-Pada tugas ini dibuat sebuah procedure MySQL bernama `cek_predikat_mahasiswa` yang digunakan untuk menentukan predikat mahasiswa berdasarkan nilai yang dimasukkan. Selain itu, procedure juga menentukan status kelulusan apakah mahasiswa dinyatakan lulus atau tidak.
-
-Ketentuan predikat:
-
-| Nilai | Predikat |
-|-------|----------|
-| 90 – 100 | Sangat Memuaskan |
-| 80 – 89 | Memuaskan |
-| 70 – 79 | Baik |
-| 60 – 69 | Cukup |
-| < 60 | Kurang |
-
-- Jika nilai >= 70 → Status: **Lulus**
-- Jika nilai < 70 → Status: **Tidak Lulus**
+> **Nama:** Winda Anugrah  
+> **NIM:** IK2411016  
+> **Kelas:** IK2411  
+> **Dosen:** Abdul Malik, S.Kom., M.Cs.  
+> **Mata Kuliah:** Pemrograman Basis Data — 2025/2026
 
 ---
 
-## Cara Menjalankan Script SQL
+## Tentang Tugas Ini
 
-### Menggunakan phpMyAdmin (XAMPP)
+Tugas ini mengimplementasikan struktur percabangan `IF-THEN-ELSEIF-ELSE` di dalam stored procedure MySQL. Procedure yang dibuat bernama `cek_predikat_mahasiswa`, yang secara otomatis menentukan **predikat** dan **status kelulusan** mahasiswa berdasarkan nilai yang dimasukkan.
 
-1. Pastikan XAMPP sudah berjalan (Apache + MySQL aktif)
-2. Buka browser, akses `http://localhost/phpmyadmin`
-3. Buat database baru bernama `db_percabangan`
-4. Klik tab **SQL** → **Choose File** → pilih `kuis_pertemuan4_IK2411016.sql`
-5. Klik **Go** untuk menjalankan
+---
 
-### Menggunakan MySQL Command Line
+## Logika yang Digunakan
 
-```bash
-mysql -u root -p < kode_sql/kuis_pertemuan4_IK2411016.sql
+```
+Nilai 90–100  →  Sangat Memuaskan  →  Lulus
+Nilai 80–89   →  Memuaskan         →  Lulus
+Nilai 70–79   →  Baik              →  Lulus
+Nilai 60–69   →  Cukup             →  Tidak Lulus
+Nilai < 60    →  Kurang            →  Tidak Lulus
 ```
 
-### Menjalankan Procedure
+---
 
-Setelah script dijalankan, panggil procedure dengan perintah berikut:
+## Cara Pakai
 
+**1. Jalankan script SQL di phpMyAdmin**
+```
+localhost/phpmyadmin → database db_percabangan → tab SQL → import file
+```
+
+**2. Panggil procedure**
 ```sql
 CALL cek_predikat_mahasiswa(85);
-```
+-- Output: nilai=85 | predikat=Memuaskan | status=Lulus
 
-Contoh output:
-
-```
-+-------+-----------+--------+
-| nilai | predikat  | status |
-+-------+-----------+--------+
-|    85 | Memuaskan | Lulus  |
-+-------+-----------+--------+
+CALL cek_predikat_mahasiswa(60);
+-- Output: nilai=60 | predikat=Cukup | status=Tidak Lulus
 ```
 
 ---
 
-## Kode SQL
+## Struktur Repository
 
-```sql
-DELIMITER //
-
-CREATE PROCEDURE cek_predikat_mahasiswa(IN p_nilai INT)
-BEGIN
-    DECLARE v_predikat VARCHAR(50);
-    DECLARE v_status   VARCHAR(20);
-
-    IF p_nilai >= 90 THEN
-        SET v_predikat = 'Sangat Memuaskan';
-    ELSEIF p_nilai >= 80 THEN
-        SET v_predikat = 'Memuaskan';
-    ELSEIF p_nilai >= 70 THEN
-        SET v_predikat = 'Baik';
-    ELSEIF p_nilai >= 60 THEN
-        SET v_predikat = 'Cukup';
-    ELSE
-        SET v_predikat = 'Kurang';
-    END IF;
-
-    IF p_nilai >= 70 THEN
-        SET v_status = 'Lulus';
-    ELSE
-        SET v_status = 'Tidak Lulus';
-    END IF;
-
-    SELECT
-        p_nilai    AS nilai,
-        v_predikat AS predikat,
-        v_status   AS status;
-END //
-
-DELIMITER ;
+```
+pbasisdata-pertemuan4-winda-IK2411016/
+│
+├── 📄 README.md
+├── 📁 kode_sql/
+│   └── kuis_pertemuan4_IK2411016.sql
+└── 📁 laporan/
+    └── laporan_analisis_pertemuan4_IK2411016.pdf
 ```
 
 ---
 
 ## Hasil Pengujian
 
-| Pemanggilan | Nilai | Predikat | Status |
-|-------------|-------|----------|--------|
-| `CALL cek_predikat_mahasiswa(85)` | 85 | Memuaskan | Lulus |
-| `CALL cek_predikat_mahasiswa(60)` | 60 | Cukup | Tidak Lulus |
-
----
-
-## Daftar File
-
-```
-pertemuan-04-percabangan/
-├── README.md
-├── kode_sql/
-│   └── kuis_pertemuan4_IK2411016.sql
-└── laporan/
-    └── laporan_analisis_pertemuan4_IK2411016.pdf
-```
-
-| File | Keterangan |
-|------|------------|
-| `kode_sql/kuis_pertemuan4_IK2411016.sql` | Script SQL lengkap (procedure + pengujian) |
-| `laporan/laporan_analisis_pertemuan4_IK2411016.pdf` | Laporan analisis lengkap dengan screenshot |
-| `README.md` | Dokumen ini |emuan04-percabangan-windaanugrah
+| Input | Predikat | Status |
+|:-----:|:--------:|:------:|
+| 85 | Memuaskan | ✅ Lulus |
+| 60 | Cukup | ❌ Tidak Lulus |
